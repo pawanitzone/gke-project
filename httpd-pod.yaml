@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-httpd-pod
+
+spec:
+  selector:
+    matchLabels:
+      app: httpd-web
+      location: IN
+      environment: Production
+      tier: frontend
+  replicas: 1
+  template:
+    metadata:
+      name: httpd-pod
+      namespace: project1
+      labels:
+        app: httpd-web
+        location: IN
+        environment: Production
+        tier: frontend
+
+    spec:
+      containers:
+      - name: httpd-web
+        image: pawanitzone/hyt-httpd
+        volumeMounts:
+            - name: httpd-volume
+              mountPath: /var/www/html
+      volumes:
+        - name: httpd-volume
+          persistentVolumeClaim:
+            claimName: httpd-pvc
