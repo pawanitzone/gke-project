@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: httpd-web
-        image: pawanitzone/hyt-httpd
+        image: pawanitzone/gke-image:${env.BUILD_NUMBER}
         volumeMounts:
             - name: httpd-volume
               mountPath: /var/www/html
