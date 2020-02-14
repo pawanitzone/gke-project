@@ -14,6 +14,7 @@ pipeline {
           sh "docker push pawanitzone/gke-image:${env.BUILD_NUMBER}"
         }
       }
+	 }
 	stage('Docker Remove Image') {
       steps {
         sh "docker rmi pawanitzone/gke-image:${env.BUILD_NUMBER}"
