@@ -4,4 +4,5 @@ RUN yum install httpd -y
 ADD index.html /var/www/html/
 
 EXPOSE 80
-CMD ["/usr/sbin/httpd", "-D"]
+CMD ["-D","FOREGROUND"]
+ENTRYPOINT ["/usr/sbin/httpd"]
