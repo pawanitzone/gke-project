@@ -28,7 +28,7 @@ spec:
         image: pawanitzone/gke-image:{{BUILD_NUMBER}}
         volumeMounts:
             - name: httpd-volume
-              mountPath: /var/www/html
+              mountPath: /opt
       volumes:
         - name: httpd-volume
           persistentVolumeClaim:
