@@ -9,7 +9,7 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete
   gcePersistentDisk:
     pdName: httpd-web
     fsType: ext4
