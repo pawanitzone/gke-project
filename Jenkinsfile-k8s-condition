@@ -1,0 +1,41 @@
+pipeline {
+  agent any
+  environment { 
+        check_pod = 'kubectl get all -n project1 | grep deployment.apps/deployment-httpd-pod | wc -l'     
+        
+    }
+  stages {
+    stage('Docker Build') {
+     steps {
+       sh "docker build -t pawanitzone/gke-image:${env.BUILD_NUMBER} ."
+       }
+    }
+	
+	stage('Docker Push') {
+      steps {
+	  withCredentials([usernamePassword(credentialsId: 'dockerHubUser', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh "docker push pawanitzone/gke-image:${env.BUILD_NUMBER}"
+        }
+      }
+	 }
+	stage('Docker Remove Image') {
+      steps {
+        sh "docker rmi pawanitzone/gke-image:${env.BUILD_NUMBER}"
+      }
+    }
+  
+    stage('Apply Kubernetes Files') {
+      steps {
+          withKubeConfig([credentialsId: 'credentialsId', 
+	      serverUrl: 'https://35.184.2.121',
+          namespace: 'project1']) {
+		  when { expression { check_pod == '0' }}
+          //sh "kubectl create -f httpd-storage.yaml"
+          sh 'cat httpd-pod.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g" |kubectl apply -f -'
+	  //sh "kubectl create -f httpd-svc.yaml"
+        }
+      }
+  }
+}
+}
