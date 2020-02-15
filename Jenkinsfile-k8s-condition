@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment { 
-        check_pod = 'kubectl get all -n project1 | grep deployment.apps/deployment-httpd-pod | wc -l'     
+        CHECKPOD = 'kubectl get all -n project1 | grep deployment.apps/deployment-httpd-pod | wc -l'     
         
     }
   stages {
@@ -30,7 +30,7 @@ pipeline {
           withKubeConfig([credentialsId: 'credentialsId', 
 	      serverUrl: 'https://35.184.2.121',
           namespace: 'project1']) {
-		  if (env.check_pod == '0'){
+		  if (env.CHECKPOD == 0 ){
           //sh "kubectl create -f httpd-storage.yaml"
           sh 'cat httpd-pod.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g" |kubectl apply -f -'
 	  //sh "kubectl create -f httpd-svc.yaml"
