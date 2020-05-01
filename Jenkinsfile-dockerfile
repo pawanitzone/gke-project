@@ -27,7 +27,7 @@ pipeline {
 	      serverUrl: 'https://35.184.2.121',
           namespace: 'project1']) {
           //sh "kubectl create -f httpd-storage.yaml"
-          sh 'cat httpd-pod.yaml | sed "s/{{BUILD_NUMBER}}/$BUILD_NUMBER/g" |kubectl apply -f -'
+          sh 'cat httpd-pod.yaml | sed "s/35/$BUILD_NUMBER/g" |kubectl apply -f -'
 	  //sh "kubectl create -f httpd-svc.yaml"
         }
       }
