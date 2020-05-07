@@ -26,7 +26,7 @@ spec:
       containers:
       - name: httpd-web
         #image: pawanitzone/gke-image:35
-        image: pawanitzone/hyt-http:16
+        image: pawanitzone/hyt-http:15
         volumeMounts:
             - name: httpd-volume
               mountPath: /opt
